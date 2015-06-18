@@ -10,7 +10,7 @@ class BooksController < ApplicationController
   # GET /books/1
   # GET /books/1.json
   def show
-    @chapters = @book.chapters.paginate(page: params[:page], per_page: 10)
+    @chapters = @book.chapters.paginate(page: params[:page], per_page: 30)
   end
 
   # GET /books/new

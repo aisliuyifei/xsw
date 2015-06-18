@@ -134,13 +134,13 @@ class InitBook
   end
 end
 
-InitBook.get_books
+# InitBook.get_books
 
 threads = []
 
-from = 1
+from = 67
 to = Book.last.id
-gap = 12
+gap = 3
 
 
 (0..gap-1).each do |x|
