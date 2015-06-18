@@ -1,0 +1,32 @@
+<div class="articles-list col-md-6 col-sm-12 ">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-4  articles-list-img" style="height:150px">
+			  <%=link_to book, target: '_blank' do%>
+			    <img src="<%=book.icon_url%>" data-original="<%=book.icon_url%>" alt="<%=book.name%>" class="img-responsive lazy" width="120px" height="150px"/>
+			  <%end%>
+			  <span class="articleslist-tag">
+			    <a href="<%=book.cat%>">
+			      <%=book.cat.try(:name)%>
+			    </a>
+			  </span>
+			</div>
+			<div class="col-xs-8">
+			  <h2>
+			    <%=link_to book.name.to_s.html_safe, book, target: '_blank'%>
+			  </h2>
+			  <p>
+			    <%=book.description%>
+			  </p>
+			  <ul class="articleslist-meta">
+			    <li>
+			      by <%=link_to book.author_name,"#"%>
+			    </li>
+			    <li>
+			      <%=book.updated_at.strftime('%Y-%m-%d')%>
+			    </li>
+			  </ul>
+			</div>
+		</div>
+	</div>
+</div>

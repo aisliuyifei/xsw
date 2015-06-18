@@ -1,0 +1,13 @@
+
+<h1>
+  <%= @chapter.book.name %>
+</h1>
+
+<%=render "toolbar"%>
+<h3 style="text-align:center">
+  <%= @chapter.name %>
+</h3>
+
+  <%=raw @chapter.content.html_safe %>
+
+<%=render "toolbar"%>
