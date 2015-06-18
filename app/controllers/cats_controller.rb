@@ -4,7 +4,7 @@ class CatsController < ApplicationController
   # GET /cats
   # GET /cats.json
   def index
-    @cats = Cat.all
+    @books = Book.all.paginate(page: params[:page], per_page: 30)
   end
 
   # GET /cats/1
