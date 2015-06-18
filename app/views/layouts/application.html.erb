@@ -61,18 +61,20 @@
 
     <div class="container-fluid">
           <%= bootstrap_flash %>
-		  <div class="row">
-			  <div class="top-search">
-			    <form action="/s" method="get">
-			      <div class="input-group">
-			          <input type="text" name="q" class="form-control" placeholder="搜索书名,作者名">
-			          <span class="input-group-btn">
-			              <button class="btn btn-default" type="submit">搜索</button>
-			          </span>
-			      </div>
-			    </form>
+		  <%unless @no_search%>
+			  <div class="row">
+				  <div class="top-search">
+				    <form action="/s" method="get">
+				      <div class="input-group">
+				          <input type="text" name="q" class="form-control" placeholder="搜索书名,作者名">
+				          <span class="input-group-btn">
+				              <button class="btn btn-default" type="submit">搜索</button>
+				          </span>
+				      </div>
+				    </form>
+				  </div>
 			  </div>
-		  </div>
+		  <%end%>
           <%= yield %>
 
       <footer>

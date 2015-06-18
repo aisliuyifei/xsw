@@ -4,12 +4,14 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
+    @no_search = true
     @books = Book.all
   end
 
   # GET /books/1
   # GET /books/1.json
   def show
+    @no_search = true
     @chapters = @book.chapters.paginate(page: params[:page], per_page: 30)
   end
 

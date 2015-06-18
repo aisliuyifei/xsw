@@ -1,13 +1,7 @@
 <%@page_title = "#{@chapter.book.name} |  #{@chapter.name}"%>
-<h1>
-  <%= @chapter.book.name %>
-</h1>
-
-<%=render "toolbar"%>
-<h3 style="text-align:center">
+<h3 style="text-align:center;margin-top:0px">
   <%= @chapter.name %>
 </h3>
-
+<%=render "toolbar"%>
   <%=raw @chapter.content.html_safe %>
-
 <%=render "toolbar"%>

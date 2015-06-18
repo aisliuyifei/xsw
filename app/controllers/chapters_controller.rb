@@ -4,12 +4,14 @@ class ChaptersController < ApplicationController
   # GET /chapters
   # GET /chapters.json
   def index
+    @no_search = true
     @chapters = Chapter.all
   end
 
   # GET /chapters/1
   # GET /chapters/1.json
   def show
+    @no_search = true
     @index_page = book_path(@chapter.book)
     prev_chapter = Chapter.where(book_id:@chapter.book_id).where("seq<?",@chapter.seq).last
     next_chapter = Chapter.where(book_id:@chapter.book_id).where("seq>?",@chapter.seq).first
