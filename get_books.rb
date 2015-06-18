@@ -125,8 +125,10 @@ class InitBook
   end
   
   def self.update_books_with_book_ids(from,to,gap,i)
+    puts "IN..."
     x= from + i
     while x <= to
+      puts "IN... #{x}"
       book = Book.find(x)
       InitBook.update_book(book) if book
       x += gap
@@ -135,13 +137,13 @@ class InitBook
 end
 
 # InitBook.get_books
-
+puts "START..."
 threads = []
 
-from = 67
-to = Book.last.id
-gap = 3
-
+from = 68
+to = Book.unscoped.last.id
+gap = 12
+puts "READY..."
 
 (0..gap-1).each do |x|
    array = []
