@@ -1,0 +1,22 @@
+<div class="pagination-holder hidden">
+  <ul class="pagination pagination-v1" id="pagination">
+    <%=will_paginate models, container: false %>
+  </ul>
+</div>
+
+
+<script>
+var ias = jQuery.ias({
+  container:  '#items',
+  item:       '.articles-list',
+  pagination: '#pagination',
+  next:       '.next a'
+});
+ias.extension(new IASSpinnerExtension({
+	html: '<div class="ias-spinner"><span class="ias-loading">正在加载更多...</span></div>'
+}));
+ias.extension(new IASNoneLeftExtension({
+    text: '已经到达最后一页',
+	html: '<div class="ias-noneleft">{text}</div>'
+}));
+</script>

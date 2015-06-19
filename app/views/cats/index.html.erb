@@ -1,6 +1,6 @@
-<div class=row>
+<div class="row" id="items">
 	<%=render @books%>
 </div>
 <div class="row">
-    <%=render 'shared/pagination', models: @books%>
+    <%=render 'shared/auto_load_next', models: @books%>
 </div>

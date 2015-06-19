@@ -1,6 +1,6 @@
 <%@page_title = "#{@cat.name} | 591小说网"%>
 <%- model_class = Cat -%>
-<div class="page-header">
+<div class="page-header" id="items">
   <h1><%=@cat.name%></h1>
 </div>
 
@@ -8,6 +8,6 @@
 	<%=render @books%>
 </div>
 <div class="row">
-    <%=render 'shared/pagination', models: @books%>
+    <%=render 'shared/auto_load_next', models: @books%>
 </div>
 
