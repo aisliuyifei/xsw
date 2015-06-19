@@ -140,7 +140,7 @@ end
 puts "START..."
 threads = []
 
-from = 68
+from = 103
 to = Book.unscoped.last.id
 gap = 12
 puts "READY..."
