@@ -94,10 +94,11 @@ class InitBook
     
     as = doc.css(".box_con dl dd a")
     seq = 0
+    last_chapter = Chapter.where(book_id: book.id).last
+    max_seq_now = last_chapter ? last_chapter.seq : 0
     as.each do |a|
       seq += 1
-      chapter = Chapter.find_by_book_id_and_seq(book.id,seq)
-      next if chapter 
+      next if seq <= max_seq_now 
       href = url + a['href']
       begin
         retryable(:tries => 5, :on =>Exception,:interval => 1) do
@@ -140,9 +141,9 @@ end
 puts "START..."
 threads = []
 
-from = 103
+from = 240 
 to = Book.unscoped.last.id
-gap = 12
+gap = 5
 puts "READY..."
 
 (0..gap-1).each do |x|
