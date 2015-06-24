@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'active_record'
-require './app/models/category'
+require './app/models/cat'
 require './app/models/book'
 require './app/models/chapter'
 require 'nokogiri'
@@ -36,7 +36,6 @@ def retryable(options = {}, &block)
 end
 
 class InitBook
-
   def self.get_books
     list_url = 'http://xingzhanfengbao.com/daquan.php'
 
@@ -47,61 +46,71 @@ class InitBook
       author_name = li.content.split("/").last
       book_href = "http://xingzhanfengbao.com"+li.css("a").first['href']
       book_category_name = li.parent.parent.css("h2").first.content
-      
-      category = Category.find_by_name(name)
-      if not category
-        category = Category.new 
-        category.name = name
-        puts "创建分类：#{name}"
-        category.save
+      book_category_name.gsub!("大全列表","")
+      cat = Cat.find_by_name(book_category_name)
+      if not cat
+        cat = Cat.new 
+        cat.name = book_category_name
+        puts "创建分类：#{book_category_name}"
+        cat.save
       end
       
-      book = Book.find_by_category_id_and_name_and_author_name(category.id,book_name,author_name)
+      book = Book.find_by_name_and_author_name(book_name,author_name)
       if not book      
         book = Book.new
-        book.category_id = category.id
         book.name = book_name
         book.author_name = author_name
         book.original_url = book_href
-        book.save
         puts "创建新书：#{book_name}"
-        
       end
+      book.cat_id = cat.id
+      book.save
     end
   end
   
   def self.update_books(start=0)
     Book.all.each do |x|
       if x.id>start
-        InitBook.update_book(x)
+          InitBook.update_book(x)
       end
     end
   end
   
   def self.update_book(book)
+    puts "in #{book.id}"
     url = book.original_url
     doc = Nokogiri::HTML(open(url))
     puts "OPEN URL #{url}"
     img_url = doc.css("#fmimg img").first['src']
-    begin
-      File.open("public/img/#{book.id}.jpg", 'wb') do |fo|
-        fo.write open(img_url).read 
+    puts "#{img_url}"
+    if book.icon_url !="/img/#{book.id}.jpg"
+      puts "插图 #{book.id}"
+      begin
+        File.open("public/img/#{book.id}.jpg", 'wb') do |fo|
+          fo.write open(img_url).read 
+        end
+        book.icon_url = "/img/#{book.id}.jpg"
+      rescue
+        book.icon_url = '/img/0.jpg'
       end
-      book.icon_url = "/img/#{book.id}.jpg"
-    rescue
-      book.icon_url = img_url
+      book.save
     end
-    book.save
     
     as = doc.css(".box_con dl dd a")
     seq = 0
+    last_chapter = Chapter.where(book_id: book.id).order("seq desc").limit(1).last
+    max_seq_now = last_chapter ? last_chapter.seq : 0
+    puts "seq_max #{max_seq_now}"
+    
     as.each do |a|
       seq += 1
-      chapter = Chapter.find_by_book_id_and_seq(book.id,seq)
-      next if chapter 
+      puts "#{book.id} : #{seq}"
+      next if seq <= max_seq_now 
+      puts "try #{book.id}:#{seq}"
       href = url + a['href']
       begin
         retryable(:tries => 5, :on =>Exception,:interval => 1) do
+          puts href
           html = Nokogiri::HTML(open(href))
           if html.css(".bookname h1").first
             chapter_name = html.css(".bookname h1").first.content
@@ -115,7 +124,7 @@ class InitBook
               chapter.book_id = book.id
               chapter.seq = seq
               chapter.save
-              puts "#{chapter.name}"
+              puts "#{book.id}:#{chapter.seq}"
             end             
           end 
         end
@@ -124,7 +133,8 @@ class InitBook
       end
     end
   end
+
 end
 
-InitBook.get_books
-InitBook.update_books(Chapter.last.book_id-1)
+# InitBook.get_books
+InitBook.update_books(9)

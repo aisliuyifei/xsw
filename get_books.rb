@@ -94,7 +94,7 @@ class InitBook
     
     as = doc.css(".box_con dl dd a")
     seq = 0
-    last_chapter = Chapter.where(book_id: book.id).last
+    last_chapter = Chapter.where(book_id: book.id).order("seq desc").limit(1).last
     max_seq_now = last_chapter ? last_chapter.seq : 0
     as.each do |a|
       seq += 1
@@ -130,8 +130,11 @@ class InitBook
     x= from + i
     while x <= to
       puts "IN... #{x}"
-      book = Book.find(x)
-      InitBook.update_book(book) if book
+       begin
+        book = Book.find(x)
+        InitBook.update_book(book) if book
+       rescue
+       end
       x += gap
     end
   end
@@ -141,9 +144,9 @@ end
 puts "START..."
 threads = []
 
-from = 240 
+from = 87
 to = Book.unscoped.last.id
-gap = 5
+gap = 10
 puts "READY..."
 
 (0..gap-1).each do |x|

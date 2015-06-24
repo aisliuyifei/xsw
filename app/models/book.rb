@@ -2,7 +2,7 @@ class Book < ActiveRecord::Base
   has_many :chapters
   belongs_to :cat
   
-  default_scope {order('updated_at desc')} 
+  # default_scope {order('updated_at desc')}
   
   def self.keyword_search(q)
     q = q.to_s
