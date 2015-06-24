@@ -140,7 +140,7 @@ class InitBook
   end
 end
 
-# InitBook.get_books
+InitBook.get_books
 puts "START..."
 threads = []
 

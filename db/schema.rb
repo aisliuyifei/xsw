@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617070955) do
+ActiveRecord::Schema.define(version: 20150624043132) do
 
   create_table "books", force: :cascade do |t|
     t.integer  "cat_id",         limit: 4
@@ -29,13 +29,6 @@ ActiveRecord::Schema.define(version: 20150617070955) do
   add_index "books", ["cat_id"], name: "index_books_on_cat_id", using: :btree
   add_index "books", ["name"], name: "index_books_on_name", using: :btree
 
-  create_table "categories", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.integer  "books",      limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
   create_table "cats", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -52,5 +45,7 @@ ActiveRecord::Schema.define(version: 20150617070955) do
   end
 
   add_index "chapters", ["book_id", "seq"], name: "index_chapters_on_book_id_and_seq", using: :btree
+  add_index "chapters", ["book_id"], name: "index_chapters_on_book_id", using: :btree
+  add_index "chapters", ["seq"], name: "index_chapters_on_seq", using: :btree
 
 end
